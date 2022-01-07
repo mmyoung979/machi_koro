@@ -1,0 +1,33 @@
+# Python imports
+from os import listdir
+from pathlib import Path
+
+# Local imports
+from apis.utils.db_utils import make_connection
+
+
+def init_db():
+    # Get schema files
+    filepath = str(Path(__file__).resolve().parent.parent) + "/schema/"
+    files = listdir(filepath)
+
+    # use schema to build database
+    with make_connection() as connection:
+        with connection.cursor() as cursor:
+            for file_ in files:
+                with open(filepath + file_) as schema_file:
+                    # Get rid of any newlines and whitespaces
+                    sql = [line.strip() for line in schema_file.readlines()]
+
+                    # Ignore commented out lines
+                    sql = [line for line in sql if not line.startswith("--")]
+
+                    # Combine into one line
+                    sql = " ".join(sql)
+
+                    # Run SQL
+                    cursor.execute(sql)
+
+
+if __name__ == "__main__":
+    init_db()

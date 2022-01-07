@@ -1,9 +1,31 @@
-CREATE TABLE games (id AS IDENTITY)
-CREATE TABLE players (name TEXT)
+CREATE TABLE games (timestamp TIMESTAMP);
+
+CREATE TABLE players (username TEXT, avatar INTEGER);
+
 CREATE TABLE buildings (
     name TEXT,
     landmark BOOLEAN,
     type TEXT,
-    dice_roll INT,
-    cost INT,
-)
+    dice_roll INTEGER,
+    cost INTEGER,
+    effect_turn TEXT
+);
+
+INSERT INTO
+    buildings (
+        name,
+        landmark,
+        type,
+        dice_roll,
+        cost,
+        effect_turn
+    )
+VALUES
+    (
+        'Wheat Field',
+        False,
+        'Agriculture',
+        1,
+        1,
+        'Anyone'
+    );
