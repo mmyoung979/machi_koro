@@ -2,3 +2,4 @@ __pycache__
 .vscode
 node_modules
 docker-compose-local
+.env
