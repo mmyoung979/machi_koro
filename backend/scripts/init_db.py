@@ -1,6 +1,10 @@
 # Python imports
+import logging
 from os import listdir
 from pathlib import Path
+
+# Third party imports
+import psycopg2
 
 # Local imports
 from apis.utils.db_utils import make_connection
@@ -22,11 +26,18 @@ def init_db():
                     # Ignore commented out lines
                     sql = [line for line in sql if not line.startswith("--")]
 
-                    # Combine into one line
-                    sql = " ".join(sql)
+                    # Make sure text was entered
+                    if sql:
+                        # Combine into one line
+                        sql = " ".join(sql)
 
-                    # Run SQL
-                    cursor.execute(sql)
+                        # Run SQL
+                        try:
+                            cursor.execute(sql)
+                        except psycopg2.Error as err:
+                            logging.info(sql)
+                            logging.error(err)
+                            cursor.execute("ROLLBACK")
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ from flask_restful import Api
 
 # Local imports
 from apis.purchase import Purchase
+from apis.roll_dice import RollDice
 
 
 def create_app():
@@ -21,3 +22,4 @@ def create_app():
 app = create_app()
 api = Api(app)
 api.add_resource(Purchase, "/purchase")
+api.add_resource(RollDice, "/roll")

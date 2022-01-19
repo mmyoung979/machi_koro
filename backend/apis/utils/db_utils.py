@@ -14,10 +14,17 @@ def make_connection():
     )
 
 
-def execute_sql(sql):
+def query_database(sql):
     with make_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(sql)
             results = cursor.fetchall()
-
+    print(f"Executed SQL:\n{sql}")
     return results
+
+
+def update_database(sql):
+    with make_connection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(sql)
+    print(f"Executed SQL:\n{sql}")
