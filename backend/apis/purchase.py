@@ -1,67 +1,65 @@
+"""
+A player in a game purchases 1 or more of a building.
+This does not include landmarks.
+"""
 # Third party imports
-from flask_restful import Resource, reqparse
+from flask_restx import Namespace, Resource, reqparse
 
 # Local imports
 from apis.utils.db_utils import query_database, update_database
 from apis.utils.purchase_utils import update_player_coins
 
 # Global variables
-parser = reqparse.RequestParser()
-parser.add_argument("game", type=int, help="ID of game being played", required=True)
-parser.add_argument(
-    "player", type=int, help="Player who is purchased a building", required=True
+API = Namespace(
+    "purchase",
+    description="Player purchases one or more buildings",
 )
-parser.add_argument(
-    "building", type=int, help="Building being purchased", required=True
+PARSER = reqparse.RequestParser()
+PARSER.add_argument(
+    "game",
+    type=int,
+    help="ID of game being played",
+    required=True,
 )
-parser.add_argument("price", type=int, help="Price of building", required=True)
+PARSER.add_argument(
+    "player",
+    type=int,
+    help="Player who is purchased a building",
+    required=True,
+)
+PARSER.add_argument(
+    "building",
+    type=int,
+    help="Building being purchased",
+    required=True,
+)
+PARSER.add_argument(
+    "quantity",
+    type=int,
+    help="Number of buildings being purchased",
+    required=True,
+)
+PARSER.add_argument(
+    "price",
+    type=int,
+    help="Price of building",
+    required=True,
+)
 
 
+@API.route("/", strict_slashes=False)
 class Purchase(Resource):
-    def get(self):
-        args = parser.parse_args()
-        game = args.game
-        player = args.player
-        building = args.building
-        price = args.price
-
-        update_player_coins(game, player, "-", price)
-
-        sql = f"""
-        SELECT
-            player,
-            building,
-            quantity
-        FROM
-            player_building_mapping
-        WHERE
-            game = {game}
-            AND player = {player}
-            AND building = {building}
-        """
-        results = query_database(sql)
-        if results:
-            player, building, quantity = results[0]
-            return {
-                "player": player,
-                "building": building,
-                "quantity": quantity,
-            }
-
     def post(self):
-        args = parser.parse_args()
-        game = args.game
-        player = args.player
-        building = args.building
+        args = PARSER.parse_args()
         sql = f"""
         UPDATE
             player_building_mapping
         SET
-            quantity = quantity + 1
+            quantity = quantity + {args.quantity}
         WHERE
-            game = {game}
-            AND player = {player}
-            AND building = {building}
+            game = {args.game}
+            AND player = {args.player}
+            AND building = {args.building}
         """
         update_database(sql)
-        return "200"
+        return 201

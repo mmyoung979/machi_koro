@@ -2,7 +2,11 @@
 from psycopg2 import connect
 
 # Local imports
+from apis.utils.logging_utils import get_logger
 from settings import DB_HOST, DB_NAME, DB_USER, DB_PASSWORD
+
+# Global variables
+LOGGER = get_logger()
 
 
 def make_connection():
@@ -19,12 +23,12 @@ def query_database(sql):
         with connection.cursor() as cursor:
             cursor.execute(sql)
             results = cursor.fetchall()
-    print(f"Executed SQL:\n{sql}")
+    LOGGER.info(f"Executed SQL:\n{sql}")
     return results
 
 
 def update_database(sql):
+    LOGGER.info(f"Executing SQL:\n{sql}")
     with make_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(sql)
-    print(f"Executed SQL:\n{sql}")

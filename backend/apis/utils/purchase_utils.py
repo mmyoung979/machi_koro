@@ -1,6 +1,5 @@
 # Local imports
-from psycopg2.extensions import update_database
-from apis.db_utils import update_database
+from apis.utils.db_utils import update_database
 
 
 def update_player_coins(

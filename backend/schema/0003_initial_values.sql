@@ -11,8 +11,7 @@ INSERT INTO
 VALUES
     (1, 'Anyone'),
     (2, 'Player'),
-    (3, 'Opponent'),
-    (4, 'Landmark');
+    (3, 'Opponent');
 
 INSERT INTO
     industries (id, name)
