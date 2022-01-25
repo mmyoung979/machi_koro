@@ -24,6 +24,10 @@ PARSER.add_argument(
 @API.route("/", strict_slashes=False)
 class Game(Resource):
     def post(self):
+        """
+        1. Create new game object
+        2. Assign initial landmarks, buildings, and coins
+        """
         args = PARSER.parse_args()
         players = args.get("players")
 
@@ -34,6 +38,7 @@ class Game(Resource):
         start_game(players)
 
     def get(self):
+        """Retrieve information about a game object"""
         args = PARSER.parse_args()
         players = args.get("players")
 

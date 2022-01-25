@@ -10,6 +10,7 @@ LOGGER = get_logger()
 
 
 def make_connection():
+    """Establish database connection"""
     return connect(
         host=DB_HOST,
         dbname=DB_NAME,
@@ -18,7 +19,15 @@ def make_connection():
     )
 
 
-def query_database(sql):
+def query_database(sql: str) -> list:
+    """Retrieve SQL query results
+
+    Args:
+        sql: SQL query to execute
+
+    Returns:
+        SQL query results
+    """
     with make_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(sql)
@@ -27,7 +36,15 @@ def query_database(sql):
     return results
 
 
-def update_database(sql):
+def update_database(sql: str) -> None:
+    """Execute SQL queries without results (i.e. INSERT, UPDATE)
+
+    Args:
+        sql: SQL query to execute
+
+    Returns:
+        Updated database
+    """
     LOGGER.info(f"Executing SQL:\n{sql}")
     with make_connection() as connection:
         with connection.cursor() as cursor:

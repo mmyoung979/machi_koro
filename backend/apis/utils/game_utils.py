@@ -62,6 +62,14 @@ def start_game(players: List[int]) -> None:
 
 
 def get_game_info(players: List[int]):
+    """Read endpoint for game object
+
+    Args:
+        players: Users to connect to the game object
+
+    Returns:
+        Database information about a game containing input players
+    """
     # Make sure all player slots are full
     players = fill_players(players)
 
@@ -95,6 +103,14 @@ def get_game_info(players: List[int]):
 
 
 def player_error_checking(players: List[int]) -> None:
+    """Make sure players were entered correctly
+
+    Args:
+        players: Users to connect to the game object
+
+    Returns:
+        Errors if any, otherwise nothing
+    """
     if not players:
         raise ValueError("No players recognized.")
     if type(players) != list:
@@ -106,7 +122,14 @@ def player_error_checking(players: List[int]) -> None:
 
 
 def fill_players(players: List[int]) -> List[int]:
-    # Fill in empty player slots
+    """Fill in empty player slots
+
+    Args:
+        players: Users to connect to the game object
+
+    Returns:
+        players with NULL in empty spaces
+    """
     while len(players) < 4:
         players.append("NULL")
     return players
